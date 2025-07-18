@@ -11,7 +11,7 @@ function j --description "Fuzzy cd into a directory from ~/.cache/cd_history"
     set selection (fzf --reverse --height 10 < $cache_file)
 
     if test -n "$selection" -a -d "$selection"
-        builtin cd "$selection"
+        cd "$selection"
     else
         echo "Invalid or no selection." >&2
         return 1
