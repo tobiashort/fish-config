@@ -8,7 +8,7 @@ function j --description "Fuzzy cd into a directory from ~/.cache/cd_history"
     end
 
     # Use fzf to select a directory
-    set selection (fzf --reverse --height 10 < $cache_file)
+    set selection (fzf --reverse --no-sort --height 10 < $cache_file)
 
     if test -n "$selection" -a -d "$selection"
         cd "$selection"
