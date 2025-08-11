@@ -19,6 +19,8 @@ end
 
 # Use vi bindings
 fish_vi_key_bindings
+# MacOS, if highlighting in visual mode does not work:
+# set -g fish_color_selection --background=brblue --bold
 
 # Use different cursor shapes for different vi modes
 # set -g fish_vi_force_cursor 1
