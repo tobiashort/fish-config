@@ -8,13 +8,22 @@ function fish_prompt
     set -g __fish_git_prompt_showstashstate 1
     set -g __fish_git_prompt_showupstream auto
     set -l symbol ' $ '
+    set -l user_color blue
     if fish_is_root_user
         set symbol ' # '
+        set user_color red
     end
-    echo -n $USER@$hostname
+    set_color $user_color
+    echo -n "$USER"
+    set_color normal
+    echo -n "@"
+    echo -n (prompt_hostname)
+    echo -n " "
     echo -n (prompt_pwd)
     echo -n (fish_git_prompt)
+    set_color $user_color
     echo -n $symbol
+    set_color normal
 end
 
 # Log execution time
