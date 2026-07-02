@@ -17,6 +17,19 @@ function fish_prompt
     echo -n $symbol
 end
 
+# Log execution time
+function postexec --on-event fish_postexec
+    set last_status $status
+    echo
+    if [ "$last_status" -ne 0 ]
+        echo "exited with code $(set_color yellow)$last_status$(set_color normal)"
+    end
+    echo "finished $(set_color yellow)$(date '+%Y-%m-%d %H:%M:%S ')$(set_color normal)"
+    echo "took $(set_color yellow)$CMD_DURATION$(set_color normal) milliseconds"
+    echo
+    set CMD_DURATION 0
+end
+
 # Use vi bindings
 fish_vi_key_bindings
 # MacOS, if highlighting in visual mode does not work:
@@ -32,3 +45,7 @@ set fish_cursor_visual block
 # Remove vi mode indicator from prompt
 function fish_mode_prompt
 end
+
+# th-utils integration
+# th-change-directory --fish | source
+# th-shell-history --integration --fish | source
