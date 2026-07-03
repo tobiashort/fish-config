@@ -60,6 +60,8 @@ function fish_th_key_bindings
     end
 
     bind -M default \e to-normal-mode
+    bind -M default \e\[A history-search-backward
+    bind -M default \e\[B history-search-forward
 
     bind -M normal \e to-normal-mode
     bind -M normal i to-default-mode
@@ -75,6 +77,8 @@ function fish_th_key_bindings
     bind -M normal c change-selection
     bind -M normal x select-line
     bind -M normal v begin-selection
+    bind -M normal \e\[A history-search-backward
+    bind -M normal \e\[B history-search-forward
 
     to-default-mode
 end
