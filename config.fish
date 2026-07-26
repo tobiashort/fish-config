@@ -26,6 +26,29 @@ function fish_prompt
     set_color normal
 end
 
+function format_duration --argument ms
+    set -l days (math "floor($ms / 86400000)")
+    set ms (math "$ms % 86400000")
+
+    set -l hours (math "floor($ms / 3600000)")
+    set ms (math "$ms % 3600000")
+
+    set -l minutes (math "floor($ms / 60000)")
+    set ms (math "$ms % 60000")
+
+    set -l seconds (math "floor($ms / 1000)")
+    set ms (math "$ms % 1000")
+
+    set -l out
+
+    test $days -gt 0; and set out "$out"$days"d"
+    test $hours -gt 0; and set out "$out"$hours"h"
+    test $minutes -gt 0; and set out "$out"$minutes"m"
+    test $seconds -gt 0; and set out "$out"$seconds"s"
+    set out "$out"$ms"ms"
+    echo $out
+end
+
 # Log execution time
 function postexec --on-event fish_postexec
     set last_status $status
@@ -34,7 +57,7 @@ function postexec --on-event fish_postexec
         echo "exited with code $(set_color yellow)$last_status$(set_color normal)"
     end
     echo "finished $(set_color yellow)$(date '+%Y-%m-%d %H:%M:%S ')$(set_color normal)"
-    echo "took $(set_color yellow)$CMD_DURATION$(set_color normal) milliseconds"
+    echo "took $(set_color yellow)$(format_duration $CMD_DURATION)$(set_color normal)"
     echo
     set CMD_DURATION 0
 end
