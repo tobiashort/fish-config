@@ -40,13 +40,28 @@ function format_duration --argument ms
     set ms (math "$ms % 1000")
 
     set -l out
+    set -l started 0
 
-    test $days -gt 0; and set out "$out"$days"d"
-    test $hours -gt 0; and set out "$out"$hours"h"
-    test $minutes -gt 0; and set out "$out"$minutes"m"
-    test $seconds -gt 0; and set out "$out"$seconds"s"
-    set out "$out"$ms"ms"
-    echo $out
+    if test $days -gt 0
+        set out "$out$days"d" "
+        set started 1
+    end
+
+    if test $started -eq 1 -o $hours -gt 0
+        set out "$out$hours"h" "
+        set started 1
+    end
+
+    if test $started -eq 1 -o $minutes -gt 0
+        set out "$out$minutes"m" "
+        set started 1
+    end
+
+    if test $started -eq 1 -o $seconds -gt 0
+        set out "$out$seconds"s" "
+    end
+
+    echo (string trim "$out$ms"'ms')
 end
 
 # Log execution time
