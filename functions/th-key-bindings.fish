@@ -109,7 +109,9 @@ function th-key-bindings
     bind -M default \e th-to-custom-mode
     bind -M default \e\[A history-search-backward
     bind -M default \e\[B history-search-forward
-    bind -M default \cr history-pager
+    if not bind -M default \cr >/dev/null 2>&1
+        bind -M default \cr history-pager
+    end
 
     bind -M th \e th-to-custom-mode
     bind -M th i th-to-default-mode
