@@ -1,4 +1,4 @@
-set -g th_visual_mode off
+set -g th_select_mode off
 
 function th-key-bindings
 
@@ -16,11 +16,11 @@ function th-key-bindings
         end
     end
 
-    function th-to-normal-mode
-        set fish_bind_mode normal
+    function th-to-custom-mode
+        set fish_bind_mode th
         th-cursor-block
         commandline -f end-selection repaint
-        set -g th_visual_mode off
+        set -g th_select_mode off
     end
 
     function th-to-default-mode
@@ -30,7 +30,7 @@ function th-key-bindings
     end
 
     function th-forward-word
-        if test $th_visual_mode = off
+        if test $th_select_mode = off
             commandline -f forward-word backward-word begin-selection forward-word
         else
             commandline -f forward-word
@@ -38,7 +38,7 @@ function th-key-bindings
     end
 
     function th-forward-word-end
-        if test $th_visual_mode = off
+        if test $th_select_mode = off
             commandline -f forward-word backward-word begin-selection forward-word-end
         else
             commandline -f forward-word-end
@@ -46,7 +46,7 @@ function th-key-bindings
     end
 
     function th-backward-word
-        if test $th_visual_mode = off
+        if test $th_select_mode = off
             commandline -f begin-selection backward-word
         else
             commandline -f backward-word
@@ -64,11 +64,11 @@ function th-key-bindings
     end
 
     function th-toggle-selection
-        if test "$th_visual_mode" = on
-            set -g th_visual_mode off
+        if test "$th_select_mode" = on
+            set -g th_select_mode off
             commandline -f end-selection
         else
-            set -g th_visual_mode on
+            set -g th_select_mode on
             commandline -f begin-selection
         end
     end
@@ -93,42 +93,43 @@ function th-key-bindings
     end
 
     function th-forward-char
-        if test $th_visual_mode = off
+        if test $th_select_mode = off
             commandline -f end-selection
         end
         commandline -f forward-char
     end
 
     function th-backward-char
-        if test $th_visual_mode = off
+        if test $th_select_mode = off
             commandline -f end-selection
         end
         commandline -f backward-char
     end
 
-    bind -M default \e th-to-normal-mode
+    bind -M default \e th-to-custom-mode
     bind -M default \e\[A history-search-backward
     bind -M default \e\[B history-search-forward
+    bind -M default \cr history-pager
 
-    bind -M normal \e th-to-normal-mode
-    bind -M normal i th-to-default-mode
-    bind -M normal h th-backward-char
-    bind -M normal l th-forward-char
-    bind -M normal b th-backward-word
-    bind -M normal w th-forward-word
-    bind -M normal e th-forward-word-end
-    bind -M normal gl end-of-line
-    bind -M normal gh beginning-of-line
-    bind -M normal A th-append-to-line
-    bind -M normal I th-prepend-to-line
-    bind -M normal d th-delete-selection
-    bind -M normal c th-change-selection
-    bind -M normal x th-select-line
-    bind -M normal v th-toggle-selection
-    bind -M normal \e\[A history-search-backward
-    bind -M normal \e\[B history-search-forward
-    bind -M normal u undo
-    bind -M normal U redo
+    bind -M th \e th-to-custom-mode
+    bind -M th i th-to-default-mode
+    bind -M th h th-backward-char
+    bind -M th l th-forward-char
+    bind -M th b th-backward-word
+    bind -M th w th-forward-word
+    bind -M th e th-forward-word-end
+    bind -M th gl end-of-line
+    bind -M th gh beginning-of-line
+    bind -M th A th-append-to-line
+    bind -M th I th-prepend-to-line
+    bind -M th d th-delete-selection
+    bind -M th c th-change-selection
+    bind -M th x th-select-line
+    bind -M th v th-toggle-selection
+    bind -M th \e\[A history-search-backward
+    bind -M th \e\[B history-search-forward
+    bind -M th u undo
+    bind -M th U redo
 
     th-to-default-mode
 end

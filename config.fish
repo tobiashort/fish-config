@@ -89,6 +89,6 @@ if status is-interactive
     end
 
     # th-utils integration
-    # th-change-directory --fish | source
-    # th-shell-history --integration --fish | source
+    th-change-directory --fish | source
+    th-shell-history --integration --fish | source
 end
