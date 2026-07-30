@@ -79,7 +79,7 @@ if status is-interactive
     end
 
     # Custom helix-like key bindings
-    fish_th_key_bindings
+    set -g fish_key_bindings th-key-bindings
 
     # MacOS, if highlighting in visual mode does not work:
     # set -g fish_color_selection --background=brblue --bold
