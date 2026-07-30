@@ -106,6 +106,20 @@ function th-key-bindings
         commandline -f backward-char
     end
 
+    function th-end-of-line
+        if test $th_select_mode = off
+            commandline -f end-selection
+        end
+        commandline -f end-of-line
+    end
+
+    function th-beginning-of-line
+        if test $th_select_mode = off
+            commandline -f end-selection
+        end
+        commandline -f beginning-of-line
+    end
+
     bind -M default \e th-to-custom-mode
     bind -M default \e\[A history-search-backward
     bind -M default \e\[B history-search-forward
@@ -120,8 +134,8 @@ function th-key-bindings
     bind -M th b th-backward-word
     bind -M th w th-forward-word
     bind -M th e th-forward-word-end
-    bind -M th gl end-of-line
-    bind -M th gh beginning-of-line
+    bind -M th gl th-end-of-line
+    bind -M th gh th-beginning-of-line
     bind -M th A th-append-to-line
     bind -M th I th-prepend-to-line
     bind -M th d th-delete-selection
