@@ -2,6 +2,9 @@ set -g th_select_mode off
 
 function th-key-bindings
 
+    function th-noop
+    end
+
     function th-cursor-block
         printf '\e[2 q'
     end
@@ -121,6 +124,8 @@ function th-key-bindings
     end
 
     bind -M default \e th-to-custom-mode
+    bind -M default \e\[200~ th-noop
+    bind -M default \e\[201~ th-noop
     bind -M default \e\[A history-search-backward
     bind -M default \e\[B history-search-forward
     if not bind -M default \cr >/dev/null 2>&1
@@ -128,6 +133,8 @@ function th-key-bindings
     end
 
     bind -M th \e th-to-custom-mode
+    bind -M th \e\[200~ th-noop
+    bind -M th \e\[201~ th-noop
     bind -M th i th-to-default-mode
     bind -M th h th-backward-char
     bind -M th l th-forward-char
