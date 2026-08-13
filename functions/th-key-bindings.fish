@@ -1,4 +1,5 @@
 set -g th_select_mode off
+set -g th_select_mode_backward_char_first_time true
 
 function th-key-bindings
 
@@ -23,13 +24,32 @@ function th-key-bindings
         set fish_bind_mode th
         th-cursor-block
         commandline -f end-selection repaint
-        set -g th_select_mode off
+        th-select-mode-off
     end
 
     function th-to-default-mode
         set fish_bind_mode default
         th-cursor-bar
         commandline -f end-selection repaint
+    end
+
+    function th-select-mode-on
+        set -g th_select_mode on
+        set -g th_select_mode_backward_char_first_time true
+    end
+
+    function th-select-mode-off
+        set -g th_select_mode off
+    end
+
+    function th-toggle-selection
+        if test "$th_select_mode" = on
+            th-select-mode-off
+            commandline -f end-selection
+        else
+            th-select-mode-on
+            commandline -f begin-selection
+        end
     end
 
     function th-forward-word
@@ -66,16 +86,6 @@ function th-key-bindings
         th-to-default-mode
     end
 
-    function th-toggle-selection
-        if test "$th_select_mode" = on
-            set -g th_select_mode off
-            commandline -f end-selection
-        else
-            set -g th_select_mode on
-            commandline -f begin-selection
-        end
-    end
-
     function th-delete-selection
         set -l start (commandline --selection-start)
 
@@ -105,6 +115,11 @@ function th-key-bindings
     function th-backward-char
         if test $th_select_mode = off
             commandline -f end-selection
+        else
+            if $th_select_mode_backward_char_first_time
+                set -g th_select_mode_backward_char_first_time false
+                commandline -f end-selection forward-char begin-selection backward-char
+            end
         end
         commandline -f backward-char
     end
@@ -121,6 +136,30 @@ function th-key-bindings
             commandline -f end-selection
         end
         commandline -f beginning-of-line
+    end
+
+    function th-yank
+        fish_clipboard_copy
+        th-select-mode-off
+        commandline -f end-selection
+    end
+
+    function th-paste-after
+        if test $cursor -eq (string length -- $commandline)
+            commandline -i ' '
+        else
+            commandline -f forward-char
+        end
+        fish_clipboard_paste
+    end
+
+    function th-paste-before
+        fish_clipboard_paste
+    end
+
+    function th-execute
+        commandline -f execute
+        th-to-default-mode
     end
 
     bind -M default \e th-to-custom-mode
@@ -153,6 +192,10 @@ function th-key-bindings
     bind -M th \e\[B history-search-forward
     bind -M th u undo
     bind -M th U redo
+    bind -M th y th-yank
+    bind -M th p th-paste-after
+    bind -M th P th-paste-before
+    bind -M th \r th-execute
 
     th-to-default-mode
 end
