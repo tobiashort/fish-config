@@ -139,22 +139,21 @@ function th-key-bindings
     end
 
     function th-yank
-        fish_clipboard_copy
         th-select-mode-off
-        commandline -f end-selection
+        commandline -f kill-selection yank end-selection
     end
 
     function th-paste-after
-        if test $cursor -eq (string length -- $commandline)
+        if test (commandline --cursor) -eq (string length -- (commandline))
             commandline -i ' '
         else
             commandline -f forward-char
         end
-        fish_clipboard_paste
+        commandline -f yank
     end
 
     function th-paste-before
-        fish_clipboard_paste
+        commandline -f yank
     end
 
     function th-execute
